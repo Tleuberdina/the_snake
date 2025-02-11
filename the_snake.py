@@ -95,6 +95,7 @@ class Snake(GameObject):
         self.direction = RIGHT
         self.next_direction = None
         self.last = None
+        self.position = None
 
     def update_direction(self):
         """Обновляем напавление движения змейки."""
