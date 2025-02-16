@@ -51,12 +51,6 @@ class GameObject:
         self.body_color = body_color
         self.position = CENTER_SCREEN
 
-    def draw_cell(self):
-        """Общая отрисовка ячейки объектов"""
-        rect = pg.Rect(self.position, (GRID_SIZE, GRID_SIZE))
-        pg.draw.rect(screen, self.body_color, rect)
-        pg.draw.rect(screen, BORDER_COLOR, rect, 1)
-
     def draw(self):
         """Отрисовка."""
         raise NotImplementedError('Ожидаем уточнение в дочерних классах')
@@ -87,7 +81,9 @@ class Apple(GameObject):
 
     def draw(self):
         """Отрисовываем яблоко."""
-        self.draw_cell()
+        rect = pg.Rect(self.position, (GRID_SIZE, GRID_SIZE))
+        pg.draw.rect(screen, self.body_color, rect)
+        pg.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 
 class Snake(GameObject):
@@ -122,8 +118,10 @@ class Snake(GameObject):
 
     def draw(self):
         """Отрисовка змейки."""
-        for self.position in self.positions[:-1]:
-            self.draw_cell()
+        for position in self.positions[:-1]:
+            rect = (pg.Rect(position, (GRID_SIZE, GRID_SIZE)))
+            pg.draw.rect(screen, self.body_color, rect)
+            pg.draw.rect(screen, BORDER_COLOR, rect, 1)
         """Отрисовка головы змейки."""
         head_rect = pg.Rect(self.get_head_position(), (GRID_SIZE, GRID_SIZE))
         pg.draw.rect(screen, self.body_color, head_rect)
@@ -177,6 +175,7 @@ def main():
             snake.length += 1
             apple.randomize_position()
         # проверяем встречу змейки со своим хвостом
+        # не понимаю почему не работает встреча с хвостом
         elif snake.get_head_position() in snake.positions[1:]:
             snake.reset()
             apple.randomize_position()
