@@ -136,6 +136,7 @@ class Snake(GameObject):
         self.direction = choice([UP, DOWN, LEFT, RIGHT])
         self.next_direction = None
 
+
 def handle_keys(game_object):
     """Сбрасывает нажатие клавиш, чтобы изменить направление змейки."""
     for event in pg.event.get():
