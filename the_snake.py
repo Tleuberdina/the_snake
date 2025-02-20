@@ -64,10 +64,9 @@ class Apple(GameObject):
     """Объявляем дочерний класс"""
 
     def __init__(self,
-                 body_color=APPLE_COLOR,
-                 occupied_positions=[CENTER_SCREEN]):
+                 body_color=APPLE_COLOR):
         """Инициализация."""
-        self.occupied_positions = occupied_positions
+        self.occupied_positions = [CENTER_SCREEN]
         super().__init__(body_color)
         self.randomize_position()
 
