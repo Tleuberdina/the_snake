@@ -7,9 +7,7 @@ SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
 GRID_SIZE = 20
 GRID_WIDTH = SCREEN_WIDTH // GRID_SIZE
 GRID_HEIGHT = SCREEN_HEIGHT // GRID_SIZE
-# Усли изменить CENTER_SCREEN на кортеж,
-# не понимаю как потом изменить логику всей игры.
-CENTER_SCREEN = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
+CENTER_SCREEN = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
 # Направления движения:
 UP = (0, -1)
@@ -67,7 +65,7 @@ class Apple(GameObject):
 
     def __init__(self,
                  body_color=APPLE_COLOR,
-                 occupied_positions=CENTER_SCREEN):
+                 occupied_positions=[CENTER_SCREEN]):
         """Инициализация."""
         self.occupied_positions = occupied_positions
         super().__init__(body_color)
@@ -95,10 +93,10 @@ class Snake(GameObject):
     def __init__(self, body_color=SNAKE_COLOR):
         """Инициализация."""
         self.length = 1
-        self.positions = CENTER_SCREEN
+        self.positions = [CENTER_SCREEN]
         self.direction = RIGHT
         self.next_direction = None
-        self.position = None
+        self.position = [CENTER_SCREEN]
         super().__init__(body_color)
 
     def update_direction(self):
@@ -143,7 +141,7 @@ class Snake(GameObject):
     def reset(self):
         """Сбрасывание змейки в первоначальное состояние."""
         self.length = 1
-        self.positions = CENTER_SCREEN
+        self.positions = [CENTER_SCREEN]
         self.direction = choice([UP, DOWN, LEFT, RIGHT])
         self.next_direction = None
 
@@ -179,7 +177,6 @@ def main():
             snake.length += 1
             apple.randomize_position()
         # проверяем встречу змейки со своим хвостом
-        # не понимаю почему не работает встреча с хвостом
         elif snake.get_head_position() in snake.positions[1:]:
             snake.reset()
             apple.randomize_position()
