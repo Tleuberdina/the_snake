@@ -7,6 +7,8 @@ SCREEN_WIDTH, SCREEN_HEIGHT = 640, 480
 GRID_SIZE = 20
 GRID_WIDTH = SCREEN_WIDTH // GRID_SIZE
 GRID_HEIGHT = SCREEN_HEIGHT // GRID_SIZE
+# Усли изменить CENTER_SCREEN на кортеж,
+# не понимаю как потом изменить логику всей игры.
 CENTER_SCREEN = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
 
 # Направления движения:
@@ -63,10 +65,11 @@ class GameObject:
 class Apple(GameObject):
     """Объявляем дочерний класс"""
 
-    def __init__(self, body_color=APPLE_COLOR, center_position=CENTER_SCREEN):
+    def __init__(self,
+                 body_color=APPLE_COLOR,
+                 occupied_positions=CENTER_SCREEN):
         """Инициализация."""
-        self.body_color = body_color
-        self.center_position = center_position
+        self.occupied_positions = occupied_positions
         super().__init__(body_color)
         self.randomize_position()
 
@@ -76,7 +79,7 @@ class Apple(GameObject):
             x = randint(0, GRID_WIDTH - 1)
             y = randint(0, GRID_HEIGHT - 1)
             self.position = (x * GRID_SIZE), (y * GRID_SIZE)
-            if self.position not in self.center_position:
+            if self.position not in self.occupied_positions:
                 break
 
     def draw(self):
@@ -89,14 +92,14 @@ class Apple(GameObject):
 class Snake(GameObject):
     """Объявляем дочерний класс"""
 
-    def __init__(self, body_color=SNAKE_COLOR, next_direction=None):
+    def __init__(self, body_color=SNAKE_COLOR):
         """Инициализация."""
         self.length = 1
         self.positions = CENTER_SCREEN
-        self.body_color = body_color
         self.direction = RIGHT
-        self.next_direction = next_direction
+        self.next_direction = None
         self.position = None
+        super().__init__(body_color)
 
     def update_direction(self):
         """Обновляем напавление движения змейки."""
@@ -111,6 +114,7 @@ class Snake(GameObject):
         new_x = head_x + dx * GRID_SIZE
         new_y = head_y + dy * GRID_SIZE
         new_head = (new_x % SCREEN_WIDTH, new_y % SCREEN_HEIGHT)
+        # если убрать здесь self.last игра перестает работать:
         self.last = self.positions[-1]
         self.positions.insert(0, new_head)
         if len(self.positions) > self.length:
