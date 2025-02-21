@@ -64,9 +64,11 @@ class Apple(GameObject):
     """Объявляем дочерний класс"""
 
     def __init__(self,
-                 body_color=APPLE_COLOR, occupied_positions=CENTER_SCREEN):
+                 body_color=APPLE_COLOR, occupied_positions=(CENTER_SCREEN,)):
         """Инициализация."""
         super().__init__(body_color)
+        if isinstance(occupied_positions, list):
+            occupied_positions = tuple(occupied_positions)
         self.randomize_position(occupied_positions)
 
     def randomize_position(self, occupied_positions):
@@ -75,7 +77,7 @@ class Apple(GameObject):
             x = randint(0, GRID_WIDTH - 1)
             y = randint(0, GRID_HEIGHT - 1)
             self.position = (x * GRID_SIZE), (y * GRID_SIZE)
-            if self.position not in [occupied_positions]:
+            if self.position not in occupied_positions:
                 break
 
     def draw(self):
