@@ -53,7 +53,7 @@ class GameObject:
 
     def draw(self):
         """Отрисовка."""
-        raise NotImplementedError('Ожидаем уточнение в дочерних классах')
+        raise NotImplementedError('Ожидаем уточнение в дочерних классах.')
 
 
 """Объявляем дочерние классы на базе
