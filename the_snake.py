@@ -64,10 +64,9 @@ class Apple(GameObject):
     """Объявляем дочерний класс"""
 
     def __init__(self,
-                 body_color=APPLE_COLOR, occupied_positions=CENTER_SCREEN):
+                 body_color=APPLE_COLOR, occupied_positions=[CENTER_SCREEN]):
         """Инициализация."""
         super().__init__(body_color)
-        self.occupied_positions = occupied_positions
         self.randomize_position(occupied_positions)
 
     def randomize_position(self, occupied_positions):
@@ -76,7 +75,7 @@ class Apple(GameObject):
             x = randint(0, GRID_WIDTH - 1)
             y = randint(0, GRID_HEIGHT - 1)
             self.position = (x * GRID_SIZE), (y * GRID_SIZE)
-            if self.position not in self.occupied_positions:
+            if self.position not in occupied_positions:
                 break
 
     def draw(self):
@@ -120,10 +119,6 @@ class Snake(GameObject):
             rect = (pg.Rect(position, (GRID_SIZE, GRID_SIZE)))
             pg.draw.rect(screen, self.body_color, rect)
             pg.draw.rect(screen, BORDER_COLOR, rect, 1)
-        """Отрисовка головы змейки."""
-        head_rect = pg.Rect(self.get_head_position(), (GRID_SIZE, GRID_SIZE))
-        pg.draw.rect(screen, self.body_color, head_rect)
-        pg.draw.rect(screen, BORDER_COLOR, head_rect, 1)
 
     def get_head_position(self):
         """Возвращает позицию головы змейки."""
@@ -166,11 +161,11 @@ def main():
         # проверяем встречу змейки с яблоком
         if snake.get_head_position() == apple.position:
             snake.length += 1
-            apple.randomize_position(apple.occupied_positions)
+            apple.randomize_position(snake.positions)
         # проверяем встречу змейки со своим хвостом
         elif snake.get_head_position() in snake.positions[1:]:
             snake.reset()
-            apple.randomize_position(apple.occupied_positions)
+            apple.randomize_position(snake.positions)
         screen.fill(BOARD_BACKGROUND_COLOR)
         apple.draw()
         snake.draw()
